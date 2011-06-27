@@ -7,10 +7,10 @@ class fedSpendingApi extends APIBaseClass{
 	public static $api_key = '';
 	
 	public static $base_options = 
-				array('datype' => 'required',
+				array('datype' => array('X'),
 				'detail'=>array(-1,0,1,2,3,4),
 				'sortby' => array('f','r','g','p','d') ,
-				'max_records' => 999, 		
+				'max_records' => '', 		
 				'fiscal_year'=>'',
 				'first_year_range'=>'',
 				'last_year_range'=>'');
