@@ -70,7 +70,7 @@ class fedSpendingApi extends APIBaseClass{
 		
 		$options = array_intersect_key($options,array_merge(self::$base_options,$valid_options));
 		
-		return self::make_request($valid_options,'/faads/faads.php');	
+		return self::make_request($options,'/faads/faads.php');	
 	
 	}
 	
@@ -110,7 +110,7 @@ class fedSpendingApi extends APIBaseClass{
 	
 	$options = array_intersect_key($options,array_merge($temp_array,$valid_options));
 		
-		return self::make_request($valid_options,'/faads/faads.php');	
+		return self::make_request($options,'/faads/faads.php');	
 	
 	
 	// rcv.php
