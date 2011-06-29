@@ -63,10 +63,28 @@ class fedSpendingApi extends APIBaseClass{
 		return self::make_request($options,'/fpds/fpds.php',$valid_options);	
 	}
 	
-	public function assistance($options,$detail=-1,$state=NULL){
+	public function assistance($options,$detail=-1){
 		$options['detail'] = $detail;
-		if($state != NULL) $options['state'] = $state;	
-		$valid_options = array('fiscal_year'=>'','fiscal_year_range'=>'','last_year_range'=>'','recipient_name'=>'','recipient_city_name'=>'','recipient_state_code'=>'','recipient_zip'=>'','recipient_county_name'=>'','recipient_cd'=>'','principal_place_state_code'=>'','principal_place_cc'=>'','agency_code'=>'','maj_agency_cat'=>'','recip_cat_type'=>array('f','g','h','i','n','o'), 'asst_cat_type'=>array('d','g','i','l','o'),'project_description'=>'','cfda_program_num'=>'','federal_award_id'=>'');
+		$valid_options = array(
+						'state'=>'',
+						'fiscal_year'=>'',
+						'fiscal_year_range'=>'',
+						'last_year_range'=>'',
+						'recipient_name'=>'',
+						'recipient_city_name'=>'',
+						'recipient_state_code'=>'',
+						'recipient_zip'=>'',
+						'recipient_county_name'=>'',
+						'recipient_cd'=>'',
+						'principal_place_state_code'=>'',
+						'principal_place_cc'=>'',
+						'agency_code'=>'',
+						'maj_agency_cat'=>'',
+						'recip_cat_type'=>array('f','g','h','i','n','o'),
+						'asst_cat_type'=>array('d','g','i','l','o'),
+						'project_description'=>'',
+						'cfda_program_num'=>'',
+						'federal_award_id'=>'');
 		
 		$options = array_intersect_key($options,array_merge(self::$base_options,$valid_options));
 		
@@ -76,10 +94,38 @@ class fedSpendingApi extends APIBaseClass{
 	
 	public function recover($options,$detail=-1){
 	//doesn't use 'sort' option ,it is 'sortp', remove and add value before doing array merges
+		
+		$options['detail'] = $detail;
 		$temp_array = self::$base_options;
 		unset($temp_array['sort']);
 		$temp_array['sortp'] ='';
-		$options = array_intersect_key($options,$temp_array);
-		return self::make_request($options,'/faads/faads.php');	
+		
+		$valid_options = array( 'recipient_name' => '', 	
+						'entity_duns' => '',
+						'recipient_st' => '',
+						'recipient_cd' => '', 	
+						'recipient_zip_code' => '',
+						'recipient_rl' => array('p','s','v'),
+						'pop_state_cd' => '',
+						'pop_city' => '',
+						'pop_cd' => '', 
+						'pop_postal_cd' => '',
+						'pop_country_cd' => '', 
+						'funding_agency_cd' => '',
+						'awarding_agency_cd' => '', 	
+						'funding_tas ' => '',
+						'cfda_number' => '',
+						'govt_contract_office_cd' => '',
+						'award_type' => array('G','L','C'),
+						'award_number' => '',
+						'order_number' => '',
+						'activity_yn' => array('y','n'), 	
+						'project_description' => '',
+						'full_text' => '',
+						'award_amount' => '',
+						'number_of_jobs' => '',
+						'recipient_officer_totalcomp_1' => '');
+		$valid_options = array_merge($valid_options,$temp_array);				
+		return self::make_request($options,'/rcv/rcv.php',$valid_options);	
 	}
 }
