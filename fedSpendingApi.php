@@ -2,9 +2,7 @@
 
 class fedSpendingApi extends APIBaseClass{
 // supports XML and HTML
-	public static $api_url = 'http://www.fedspending.org/';
-	
-	public static $api_key = '';
+	public static $api_url = 'http://www.fedspending.org';
 	
 	public static $base_options = 
 				array('datype' => array('X'),
@@ -15,52 +13,54 @@ class fedSpendingApi extends APIBaseClass{
 				'first_year_range'=>'',
 				'last_year_range'=>'');
 	
-	
 	public function __construct($url=NULL)
 	{
 		parent::new_request(($url?$url:self::$api_url));
 	}
 	
-	public function make_request($options,$method_name){
-		foreach($options as $key=>$value){
-				if((is_array($valid_options[$key]) && in_array($value,$valid_options[$key])) || array_key_exists($key,$valid_options))
-				$data[$key] = $value;
+	public function make_request($options,$method_name,$valid_options=NULL){
+	
+		if($valid_options != NULL && is_array($valid_options)){
+			foreach($options as $key=>$value){
+					if((is_array($valid_options[$key]) && in_array($value,$valid_options[$key])) || array_key_exists($key,$valid_options))
+					$data[$key] = $value;
+			}
 		}
+		
 		// add datatype - disable this line to return HTML
 		$data['datype'] = 'X';
-		return self::_request($path.$method_name,'get',$data);
+		return self::_request($method_name,'GET',$data);
 	}
 	
-	public function contracts($options,$detail=-1,$state=NULL){
+	public function contracts($options,$detail=-1){
+
+		$valid_options =array( 
+			'company_name'=>'',
+			'city'=>'',
+			'state'=>'',
+			'ZIPCode'=>'',
+			'vendorCountryCode'=>'',
+			'vendor_cd'=>'',
+			'pop_cd'=>'',
+			'stateCode'=>'',
+			'placeOfPerformanceZIPCode'=>'',
+			'placeOfPerformanceCountryCode'=>'',
+			'mod_agency'=>'',
+			'maj_agency_cat'=>'',
+			'psc_cat'=>'',
+			'psc_sub'=>'',
+			'descriptionOfContractRequirement'=>'',
+			'PIID',
+			'complete_cat'=> array('c','o','p','n','a','f','u')
+			);
+
+	
 	// pass parameters via options, theres a parameter at the 
 	// fpds.php
 	// at least one option is required to search
-	
-		$valid_options =array( 
-				'company_name'=>'',
-				'city'=>'',
-				'state'=>'',
-				'ZIPCode'=>'',
-				'vendorCountryCode'=>'',
-				'vendor_cd'=>'',
-				'pop_cd'=>'',
-				'stateCode'=>'',
-				'placeOfPerformanceZIPCode'=>'',
-				'placeOfPerformanceCountryCode'=>'',
-				'mod_agency'=>'',
-				'maj_agency_cat'=>'',
-				'psc_cat'=>'',
-				'psc_sub'=>'',
-				'descriptionOfContractRequirement'=>'',
-				'PIID',
-				'complete_cat'=> array('c','o','p','n','a','f','u')
-				);
-		
 		$options['detail'] = $detail;
-		if($state != NULL) $options['state'] = $state;	
 		$options = array_intersect_key($options,array_merge(self::$base_options,$valid_options));
-			
-		return self::make_request($valid_options,'/fpds/fpds.php');	
+		return self::make_request($options,'/fpds/fpds.php',$valid_options);	
 	}
 	
 	public function assistance($options,$detail=-1,$state=NULL){
@@ -70,50 +70,16 @@ class fedSpendingApi extends APIBaseClass{
 		
 		$options = array_intersect_key($options,array_merge(self::$base_options,$valid_options));
 		
-		return self::make_request($options,'/faads/faads.php');	
+		return self::make_request($options,'/faads/faads.php',$valid_options);	
 	
 	}
 	
 	public function recover($options,$detail=-1){
 	//doesn't use 'sort' option ,it is 'sortp', remove and add value before doing array merges
-	
-	
-	$valid_options =array( 
-				'sortp'=> array('r','s','f','g','z','x','k','y','h','e','j','t','a','d'),
-				'recipient_name'=>'',
-				'entity_duns'=>'',
-				'recipient_st'=>''
-				'recipient_cd'=>'',
-				'recipient_zip_code'=>'',
-				'recipient_rl'=>array('p','s','v'),
-				'pop_state_cd'=>'',
-				'pop_cd'=>'',
-				'pop_postal_cd'=>'',
-				'funding_agency_cd'=>'',
-				'awarding_agency_cd'=>'',
-				'funding_tas'=>'',
-				'cfda_number'=>'',
-				'govt_contract_office_cd'=>'',
-				'award_type' => array('G','L','C'),
-				'award_number'=>'',
-				'order_number'=>'',
-				'activity_yn'=> array('y','n');
-				'project_description'=>'',
-				'full_text'=> '',
-				'award_amount'=>'',
-				'number_of_jobs'=>'',
-				'recipient_officer_totalcomp_1'=>
-				);
-	
-	$temp_array = self::$base_options;
-	unset($temp_array['sort']);
-	
-	$options = array_intersect_key($options,array_merge($temp_array,$valid_options));
-		
+		$temp_array = self::$base_options;
+		unset($temp_array['sort']);
+		$temp_array['sortp'] ='';
+		$options = array_intersect_key($options,$temp_array);
 		return self::make_request($options,'/faads/faads.php');	
-	
-	
-	// rcv.php
-	
 	}
 }
