@@ -6,7 +6,6 @@ class fedSpendingApi extends APIBaseClass{
 	
 	public static $base_options = 
 				array('datype' => array('X'),
-				'detail'=>array('-1','0','1','2','3','4'),
 				'sortby' => array('f','r','g','p','d') ,
 				'max_records' => '', 		
 				'fiscal_year'=>'',
@@ -21,8 +20,10 @@ class fedSpendingApi extends APIBaseClass{
 	public function make_request($options,$method_name,$valid_options=NULL){
 	
 		if($valid_options != NULL && is_array($valid_options)){
+		echo "\n" . print_r($valid_options) . "\n";
 			foreach($options as $key=>$value){
-					if((is_array($valid_options[$key]) && in_array($value,$valid_options[$key])) || array_key_exists($key,$valid_options) ||array_key_exists($key,self::$base_options))
+					echo "\nkey = $key : value = $value\n";
+					if((is_array($valid_options[$key]) && in_array($value,$valid_options[$key])) || array_key_exists($key,$valid_options))
 					$data[$key] = $value;
 			}
 		}
@@ -35,6 +36,7 @@ class fedSpendingApi extends APIBaseClass{
 	public function contracts($options,$detail="-1"){
 
 		$valid_options =array( 
+			'detail'=>array('-1','0','1','2','3','4'),
 			'company_name'=>'',
 			'city'=>'',
 			'state'=>'',
@@ -66,6 +68,7 @@ class fedSpendingApi extends APIBaseClass{
 	public function assistance($options,$detail="-1"){
 		$options['detail'] = $detail;
 		$valid_options = array(
+						'detail'=>array('-1','0','1','2','3','4'),
 						'state'=>'',
 						'fiscal_year'=>'',
 						'fiscal_year_range'=>'',
@@ -100,7 +103,9 @@ class fedSpendingApi extends APIBaseClass{
 		unset($temp_array['sort']);
 		$temp_array['sortp'] ='';
 		
-		$valid_options = array( 'recipient_name' => '', 	
+		$valid_options = array( 
+						'detail'=>array('-1','0','1','2','3','4'),
+						'recipient_name' => '', 	
 						'entity_duns' => '',
 						'recipient_st' => '',
 						'recipient_cd' => '', 	
