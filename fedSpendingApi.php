@@ -6,7 +6,7 @@ class fedSpendingApi extends APIBaseClass{
 	
 	public static $base_options = 
 				array('datype' => array('X'),
-				'detail'=>array("-1",0,1,2,3,4),
+				'detail'=>array('-1','0','1','2','3','4'),
 				'sortby' => array('f','r','g','p','d') ,
 				'max_records' => '', 		
 				'fiscal_year'=>'',
