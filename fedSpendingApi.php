@@ -6,7 +6,7 @@ class fedSpendingApi extends APIBaseClass{
 	
 	public static $base_options = 
 				array('datype' => array('X'),
-				'detail'=>array(-1,0,1,2,3,4),
+				'detail'=>array("-1",0,1,2,3,4),
 				'sortby' => array('f','r','g','p','d') ,
 				'max_records' => '', 		
 				'fiscal_year'=>'',
@@ -32,7 +32,7 @@ class fedSpendingApi extends APIBaseClass{
 		return self::_request($method_name,'GET',$data);
 	}
 	
-	public function contracts($options,$detail=-1){
+	public function contracts($options,$detail="-1"){
 
 		$valid_options =array( 
 			'company_name'=>'',
@@ -63,7 +63,7 @@ class fedSpendingApi extends APIBaseClass{
 		return self::make_request($options,'/fpds/fpds.php',$valid_options);	
 	}
 	
-	public function assistance($options,$detail=-1){
+	public function assistance($options,$detail="-1"){
 		$options['detail'] = $detail;
 		$valid_options = array(
 						'state'=>'',
@@ -92,7 +92,7 @@ class fedSpendingApi extends APIBaseClass{
 	
 	}
 	
-	public function recover($options,$detail=-1){
+	public function recover($options,$detail="-1"){
 	//doesn't use 'sort' option ,it is 'sortp', remove and add value before doing array merges
 		
 		$options['detail'] = $detail;
