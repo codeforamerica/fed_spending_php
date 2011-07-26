@@ -21,7 +21,7 @@ class fedSpendingApi extends APIBaseClass{
 	public function make_request($options,$method_name,$valid_options=NULL){
 	
 		if($valid_options != NULL && is_array($valid_options)){
-			foreach($options as $key=>$value){
+			foreach(array_merge($options,self::$base_options) as $key=>$value){
 					if((is_array($valid_options[$key]) && in_array($value,$valid_options[$key])) || array_key_exists($key,$valid_options))
 					$data[$key] = $value;
 			}
