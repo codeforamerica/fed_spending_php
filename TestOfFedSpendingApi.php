@@ -20,6 +20,13 @@ class TestOfApiClass extends UnitTestCase {
     function testApiConstructs(){
     	$this->api = new self::$class_name();
     	$this->check_class_params('_http _root api_url');
+    	
+    	$this->assertNotNull($this->api->contracts(array('state'=>'AL','recipient_name'=>'Smith')));
+
+		$this->assertNotNull($this->api->assistance(array('recipient_name'=>'Smith', 'fiscal_year'=>2006)));
+
+		$this->assertNotNull($this->api->recover(array('recipient_st'=>'IA')));
+    	
     }
 
     function check_class_params($params=NULL,$mode=TRUE){
